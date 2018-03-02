@@ -15,9 +15,16 @@ public class ClienteDaoImpl implements IClienteDao {
     private EntityManager em;
 
     //@SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public List<Cliente> findAll() {
         return em.createQuery("from Cliente").getResultList();
     }
+
+    @Override
+    @Transactional()
+    public void save(Cliente cliente) {
+        em.persist(cliente);
+    }
+
 }
