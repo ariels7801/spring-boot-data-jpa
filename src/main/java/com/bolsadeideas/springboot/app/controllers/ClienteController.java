@@ -32,6 +32,7 @@ public class ClienteController {
 
         Cliente cliente = new Cliente();
 
+        // En ves de enviarlo por addAttribute se usa put
         model.put("cliente", cliente);
         model.put("titulo", "Formulario de Cliente");
         return "form";

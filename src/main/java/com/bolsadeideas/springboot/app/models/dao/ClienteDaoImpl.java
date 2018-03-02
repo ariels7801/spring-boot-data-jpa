@@ -22,7 +22,7 @@ public class ClienteDaoImpl implements IClienteDao {
     }
 
     @Override
-    @Transactional()
+    @Transactional
     public void save(Cliente cliente) {
         em.persist(cliente);
     }

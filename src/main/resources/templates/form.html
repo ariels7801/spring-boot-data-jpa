@@ -24,28 +24,30 @@
     </div>
 </nav>
 <div class="container">
-    <h1 class="text-secondary border border-success border-top-0 border-left-0 border-right-0" th:text="${titulo}"></h1>
-    <a th:href="@{/form}">Crear Cliente </a>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>nombre</th>
-            <th>apellido</th>
-            <th>email</th>
-            <th>fecha</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="cliente: ${clientes}">
-            <td th:text="${cliente.id}"></td>
-            <td th:text="${cliente.nombre}"></td>
-            <td th:text="${cliente.apellido}"></td>
-            <td th:text="${cliente.email}"></td>
-            <td th:text="${cliente.createAt}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <h1 th:text="${titulo}"></h1>
+
+    <form th:action="@{/form}" th:object="${cliente}" method="post">
+        <table >
+            <tr>
+                <td>Nombre</td>
+                <td><input type="text" th:data="${nombre}" class="form-control"/></td>
+            </tr>
+            <tr>
+                <td>Apellido</td>
+                <td><input type="text" th:data="${apellido}" class="form-control"/></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" th:data="${email}" class="form-control"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Crear Cliente" class="form-control btn btn-primary"/>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" th:data="${id}"/>
+    </form>
 </div>
 
 </body>

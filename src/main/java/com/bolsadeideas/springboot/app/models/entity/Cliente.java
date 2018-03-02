@@ -22,6 +22,11 @@ public class Cliente implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
+    // El decorador permite que se ejecute justo antes de guardar en la db
+    @PrePersist
+    public void prePersist(){
+        createAt = new Date();
+    }
 
     public Long getId() {
         return Id;
