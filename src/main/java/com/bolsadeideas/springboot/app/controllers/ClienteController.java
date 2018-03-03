@@ -40,6 +40,7 @@ public class ClienteController {
 
     @RequestMapping(value = "/form", method = RequestMethod.POST)
     public String guardar(Cliente cliente){
+
         clienteDao.save(cliente);
         return "redirect:listar";
     }
