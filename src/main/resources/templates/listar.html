@@ -37,7 +37,7 @@
             <th>email</th>
             <th>fecha</th>
             <th>editar</th>
-
+            <th>eliminar</th>
         </tr>
         </thead>
         <tbody>
@@ -48,7 +48,7 @@
             <td th:text="${cliente.email}"></td>
             <td th:text="${cliente.createAt}"></td>
             <td><a class="btn btn-primary btn-sm" th:href="@{/form/}+${cliente.id}" th:text="'editar'"></a></td>
-
+            <td><a class="btn btn-danger btn-sm" th:href="@{/eliminar/}+${cliente.id}" th:text="'eliminar'" onclick="return confirm('Estas seguro de que quieres eliminar')"></a></td>
         </tr>
         </tbody>
     </table>
