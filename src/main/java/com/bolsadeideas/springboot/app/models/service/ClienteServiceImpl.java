@@ -19,13 +19,13 @@ public class ClienteServiceImpl implements IClienteService {
     @Override
     @Transactional(readOnly = true)
     public List<Cliente> findAll() {
-        return clienteDao.findAll();
+        return (List<Cliente>)  clienteDao.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Cliente findOne(Long id) {
-        return findOne(id);
+        return clienteDao.findOne(id);
     }
 
     @Override

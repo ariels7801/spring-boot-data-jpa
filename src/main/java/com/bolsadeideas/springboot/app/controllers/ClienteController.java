@@ -22,10 +22,9 @@ public class ClienteController {
 
     // Con esta anotación va a buscar un componente que implemente esta interfase (busca un bean) //
     @Autowired
-    // Para definir una implementación concreta de agreaga el nombre que se le dio al respositorio //
     private IClienteService clienteService;
 
-    @RequestMapping(value = "listar", method = RequestMethod.GET)
+    @RequestMapping(value = "/listar", method = RequestMethod.GET)
     public String listar(Model model) {
         model.addAttribute("titulo", "Listado de clientes");
         model.addAttribute("clientes", clienteService.findAll());
