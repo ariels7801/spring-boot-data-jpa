@@ -32,6 +32,21 @@ public class ClienteController {
     @Autowired
     private IClienteService clienteService;
 
+    @GetMapping(value = "/ver/{id}")
+    public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash){
+        Cliente cliente = clienteService.findOne(id);
+
+        if (cliente == null){
+            flash.addFlashAttribute("error", "El Id del cliente no existe!");
+            return "redirect:/listar";
+        }
+
+        model.put("titulo", "Detalle cliente: " + cliente.getNombre());
+        model.put("clientes", cliente);
+
+        return "ver";
+    }
+
     @RequestMapping(value = "/listar", method = RequestMethod.GET)
     public String listar(@RequestParam(name = "page", defaultValue = "0") int page,  Model model) {
 
