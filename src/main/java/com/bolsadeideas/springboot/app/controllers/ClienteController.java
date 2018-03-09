@@ -3,11 +3,12 @@ package com.bolsadeideas.springboot.app.controllers;
 import com.bolsadeideas.springboot.app.models.entity.Cliente;
 import com.bolsadeideas.springboot.app.models.service.IClienteService;
 import com.bolsadeideas.springboot.app.util.paginator.PageRender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 // Se guarda en sesion los datos  del objeto cliente
@@ -31,6 +33,8 @@ public class ClienteController {
     // Con esta anotación va a buscar un componente que implemente esta interfase (busca un bean) //
     @Autowired
     private IClienteService clienteService;
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @GetMapping(value = "/ver/{id}")
     public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash){
@@ -42,7 +46,7 @@ public class ClienteController {
         }
 
         model.put("titulo", "Detalle cliente: " + cliente.getNombre());
-        model.put("clientes", cliente);
+        model.put("cliente", cliente);
 
         return "ver";
     }
@@ -103,26 +107,29 @@ public class ClienteController {
         }
 
         if(!foto.isEmpty()){
-            //Path directorioRecursos = Paths.get("src//main/resources//static/uploads");
-            //String rootPath = directorioRecursos.toFile().getAbsolutePath();
-            String rootPath = "C://uploads";
+
+            String uniqueFilenme = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
+            Path rootPath = Paths.get("uploads").resolve(uniqueFilenme);
+
+            Path rootAbsolutePath = rootPath.toAbsolutePath();
+            log.info("rootPath: "+ rootPath);
+            log.info("rootAbsolutePath: "+ rootAbsolutePath);
+
 
             try{
-                byte[] bytes = foto.getBytes();
-                Path rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
-                Files.write(rutaCompleta, bytes);
-                flash.addFlashAttribute("info", "Ha subido correctamente " + foto.getOriginalFilename());
 
-                cliente.setFoto(foto.getOriginalFilename());
+                Files.copy(foto.getInputStream(), rootAbsolutePath);
+
+                flash.addFlashAttribute("info", "Ha subido correctamente " + uniqueFilenme);
+
+                cliente.setFoto(uniqueFilenme);
+
             }catch(IOException e){
                 e.printStackTrace();
             }
-
-
         }
 
         String mensajeFlash = (cliente.getId() != null)? "Cliente editado con exíto!" : "Cliente creado con exíto!";
-
         clienteService.save(cliente);
         // Borra de la session los datos del objeto cliente
         status.setComplete();
