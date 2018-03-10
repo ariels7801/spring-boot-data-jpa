@@ -7,7 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "clientes")
@@ -35,6 +37,8 @@ public class Cliente implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
 
+    private List<Factura> facturas;
+
     private String foto;
 
     // El decorador permite que se ejecute justo antes de guardar en la db
@@ -42,6 +46,10 @@ public class Cliente implements Serializable {
     public void prePersist(){
         createAt = new Date();
     }*/
+    public Cliente(){
+        facturas = new ArrayList<Factura>();
+    }
+
 
     public Long getId() {
         return Id;
@@ -86,4 +94,18 @@ public class Cliente implements Serializable {
     public String getFoto() { return foto; }
 
     public void setFoto(String foto) { this.foto = foto; }
+
+    //mappedBy es el nombre del atributo de la relacion en la otra entidad
+    @OneToMany(mappedBy ="cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<Factura> getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
+    }
+
+    public void addFactura(Factura factura){
+        facturas.add(factura);
+    }
 }
