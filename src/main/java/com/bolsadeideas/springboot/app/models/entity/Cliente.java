@@ -37,19 +37,18 @@ public class Cliente implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
 
+    //mappedBy es el nombre del atributo de la relacion en la otra entidad
+    @OneToMany(mappedBy ="cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Factura> facturas;
 
     private String foto;
 
-    // El decorador permite que se ejecute justo antes de guardar en la db
-    /*@PrePersist
-    public void prePersist(){
-        createAt = new Date();
-    }*/
+    // Constructor
     public Cliente(){
         facturas = new ArrayList<Factura>();
     }
 
+    // Getters y Setters
 
     public Long getId() {
         return Id;
@@ -95,8 +94,6 @@ public class Cliente implements Serializable {
 
     public void setFoto(String foto) { this.foto = foto; }
 
-    //mappedBy es el nombre del atributo de la relacion en la otra entidad
-    @OneToMany(mappedBy ="cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Factura> getFacturas() {
         return facturas;
     }
@@ -106,6 +103,6 @@ public class Cliente implements Serializable {
     }
 
     public void addFactura(Factura factura){
-        facturas.add(factura);
+        this.facturas.add(factura);
     }
 }
