@@ -38,7 +38,7 @@ public class Cliente implements Serializable {
     private Date createAt;
 
     //mappedBy es el nombre del atributo de la relacion en la otra entidad
-    @OneToMany(mappedBy ="cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy ="cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Factura> facturas;
 
     private String foto;
@@ -88,6 +88,11 @@ public class Cliente implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    @PrePersist
+    public void prePersist(){
+        createAt = new Date();
     }
 
     public String getFoto() { return foto; }
