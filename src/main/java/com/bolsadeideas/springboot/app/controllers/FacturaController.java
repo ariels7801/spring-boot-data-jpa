@@ -26,7 +26,7 @@ public class FacturaController {
 
         Cliente cliente = clienteService.findOne(clienteId);
 
-        if (cliente != null){
+        if (cliente == null){
             flash.addFlashAttribute("error", "El cliente no existe en la base de datos");
             return "redirect:/listar";
         }
