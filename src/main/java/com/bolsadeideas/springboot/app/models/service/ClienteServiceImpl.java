@@ -1,7 +1,9 @@
 package com.bolsadeideas.springboot.app.models.service;
 
 import com.bolsadeideas.springboot.app.models.dao.IClienteDao;
+import com.bolsadeideas.springboot.app.models.dao.IProductoDao;
 import com.bolsadeideas.springboot.app.models.entity.Cliente;
+import com.bolsadeideas.springboot.app.models.entity.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +16,10 @@ import java.util.List;
 public class ClienteServiceImpl implements IClienteService {
 
     @Autowired
-    // Para definir una implementación concreta de agreaga el nombre que se le dio al respositorio //
     private IClienteDao clienteDao;
+
+    @Autowired
+    private IProductoDao productoDao;
 
     @Override
     @Transactional(readOnly = true)
@@ -44,5 +48,10 @@ public class ClienteServiceImpl implements IClienteService {
     @Transactional
     public void delete(Long id) {
         clienteDao.delete(id);
+    }
+
+    @Override
+    public List<Producto> findByNombre(String term) {
+        return productoDao.findByNombreLikeIgnoreCase("%" + term + "%");
     }
 }
