@@ -9,13 +9,13 @@
 
             source: function (request, response) {
                 $.ajax({
-                    url : "/factura/cargar-productos/" + request.term,
-                    dataType : "json",
-                    data : {
-                        term : request.term
+                    url: "/factura/cargar-productos/" + request.term,
+                    dataType: "json",
+                    data: {
+                        term: request.term
                     },
-                    success : function(data){
-                        response($.map(data, function(item){
+                    success: function (data) {
+                        response($.map(data, function (item) {
                             return {
                                 value: item.id,
                                 label: item.nombre,
@@ -25,8 +25,18 @@
                     },
                 });
             },
-            select : function (event, ui) {
-                $("#buscar_producto").val(ui.item.nombre);
+            select: function(event, ui) {
+//                $("#buscar_producto").val(ui.item.nombre);
+
+                console.log(ui.item);
+                var linea = $("#plantillaItemsFactura").html();
+
+                linea = linea.replace(/{ID}/g, ui.item.value);
+                linea = linea.replace(/{NOMBRE}/g, ui.item.label);
+                linea = linea.replace(/{PRECIO}/g, ui.item.precio);
+
+                $("#cargarItemProducto tbody").append(linea);
+
                 return false;
             }
         });
